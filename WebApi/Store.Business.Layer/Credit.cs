@@ -10,6 +10,7 @@ namespace Store.Business.Layer
         public virtual string UserName { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual User User { get; set; }
         public virtual IList<Payment> Payments { get; set; }
     }
 }

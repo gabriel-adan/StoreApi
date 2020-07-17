@@ -43,8 +43,8 @@ namespace Store.WebApi.Controllers
                             issuer: validIssuer,
                             audience: validAudience,
                             claims: new Claim[] {
-                                new Claim("User", user.FullName),
-                                new Claim("UserName", user.UserName),
+                                new Claim("User", user.UserName),
+                                new Claim("UserName", user.FullName),
                                 new Claim(JwtHeaderParameterNames.Kid, Guid.NewGuid().ToString())
                             },
                             notBefore: new DateTimeOffset(DateTime.Now).DateTime,

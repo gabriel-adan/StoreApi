@@ -6,6 +6,7 @@ namespace Store.Business.Layer
     {
         public virtual string Code { get; set; }
         public virtual float Price { get; set; }
+        public virtual string Brand { get; set; }
 
         public virtual Specification Specification { get; set; }
         public virtual Size Size { get; set; }

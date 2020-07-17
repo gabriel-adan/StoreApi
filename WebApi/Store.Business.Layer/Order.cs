@@ -14,6 +14,7 @@ namespace Store.Business.Layer
             OrderDetails = new List<OrderDetail>();
         }
 
+        public virtual User User { get; set; }
         public virtual IList<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace Store.Logic.Layer.Contracts
 
         IList<Product> Find(string code);
 
-        bool Register(string code, float price, string description, string mark, string type, int specification, int color, int size, int category);
+        bool Register(string code, float price, string description, string brand, string detail, int specification, int color, int size, int category);
     }
 }

@@ -59,7 +59,7 @@ namespace Store.Logic.Layer.Common
             }
         }
 
-        public bool Register(string code, float price, string description, string mark, string type, int specificationId, int colorId, int sizeId, int categoryId)
+        public bool Register(string code, float price, string description, string brand, string detail, int specificationId, int colorId, int sizeId, int categoryId)
         {
             try
             {
@@ -94,8 +94,7 @@ namespace Store.Logic.Layer.Common
                         throw new ArgumentException("Categoria inválida.");
                     specification = new Specification();
                     specification.Description = description;
-                    specification.Mark = mark;
-                    specification.Type = type;
+                    specification.Detail = detail;
                     specification.Category = category;
                     specificationRepository.SaveOrUpdate(specification);
                 }
@@ -103,6 +102,7 @@ namespace Store.Logic.Layer.Common
                 product = new Product();
                 product.Code = code;
                 product.Price = price;
+                product.Brand = brand;
                 product.Specification = specification;
                 product.Color = color;
                 product.Size = size;

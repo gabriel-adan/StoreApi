@@ -6,6 +6,7 @@ namespace Store.Business.Layer
     {
         public virtual string UserName { get; set; }
         public virtual string FullName { get; set; }
+        public virtual bool IsEnabled { get; set; }
         public virtual string Password { get; set; }
     }
 }

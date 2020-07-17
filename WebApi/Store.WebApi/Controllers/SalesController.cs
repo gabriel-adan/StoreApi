@@ -31,7 +31,7 @@ namespace Store.WebApi.Controllers
                             {
                                 Id = sale.Id,
                                 Date = sale.Date,
-                                UserName = sale.UserName,
+                                UserName = sale.User.FullName,
                                 Total = sale.SaleDetails.Sum(item => item.UnitPrice)
                             };
                 var list = query.ToList();
@@ -60,8 +60,8 @@ namespace Store.WebApi.Controllers
                         Description = item.OrderDetail.Product.Specification.Description,
                         Size = item.OrderDetail.Product.Size.Name,
                         Color = item.OrderDetail.Product.Color.Name,
-                        Mark = item.OrderDetail.Product.Specification.Mark,
-                        Type = item.OrderDetail.Product.Specification.Type,
+                        Detail = item.OrderDetail.Product.Specification.Detail,
+                        Brand = item.OrderDetail.Product.Brand,
                         UnitPrice = item.UnitPrice,
                         Amount = q.Count()
                     });
@@ -70,7 +70,7 @@ namespace Store.WebApi.Controllers
                 return Ok(new {
                     Id = sale.Id,
                     Date = sale.Date,
-                    UserName = sale.UserName,
+                    UserName = sale.User.FullName,
                     Items = list
                 });
             }

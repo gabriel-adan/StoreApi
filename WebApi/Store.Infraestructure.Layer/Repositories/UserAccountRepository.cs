@@ -19,7 +19,20 @@ namespace Store.Infraestructure.Layer.Repositories
             try
             {
                 return Session.CreateCriteria<User>()
-                    .Add(Restrictions.Where<User>(u => u.UserName == userName && u.Password == password)).UniqueResult<User>();
+                    .Add(Restrictions.Where<User>(u => u.UserName == userName && u.Password == password && u.IsEnabled)).UniqueResult<User>();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public User Find(string userName)
+        {
+            try
+            {
+                return Session.CreateCriteria<User>()
+                    .Add(Restrictions.Where<User>(u => u.UserName == userName && u.IsEnabled)).UniqueResult<User>();
             }
             catch
             {

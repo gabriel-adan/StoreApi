@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Store.Business.Layer;
 using Store.Business.Layer.RepositoryInterfaces;
 using Store.Logic.Layer.Contracts;
@@ -12,12 +11,14 @@ namespace Store.Logic.Layer.Common
         private readonly ISaleRepository saleRepository;
         private readonly IOrderRepository orderRepository;
         private readonly IRepository<OrderDetail> orderDetailRepository;
+        private readonly IUserAccountRepository userAccountRepository;
 
-        public SaleLogic(ISaleRepository saleRepository, IOrderRepository orderRepository, IRepository<OrderDetail> orderDetailRepository)
+        public SaleLogic(ISaleRepository saleRepository, IOrderRepository orderRepository, IRepository<OrderDetail> orderDetailRepository, IUserAccountRepository userAccountRepository)
         {
             this.saleRepository = saleRepository;
             this.orderRepository = orderRepository;
             this.orderDetailRepository = orderDetailRepository;
+            this.userAccountRepository = userAccountRepository;
         }
 
         public Sale Get(int id)
@@ -48,7 +49,8 @@ namespace Store.Logic.Layer.Common
         {
             try
             {
-                if (string.IsNullOrEmpty(userName))
+                User user = userAccountRepository.Find(userName);
+                if (user == null)
                     throw new ArgumentException("Usuario inválido.");
                 if (date == null || !date.HasValue || date == DateTime.MinValue)
                     throw new ArgumentException("Fecha inválida.");
@@ -65,7 +67,7 @@ namespace Store.Logic.Layer.Common
                     saleRepository.BeginTransaction();
                     Sale sale = new Sale();
                     sale.Date = date.Value;
-                    sale.UserName = userName;
+                    sale.User = user;
                     saleRepository.Save(sale);
                     for (int i = 0; i < count; i++)
                     {

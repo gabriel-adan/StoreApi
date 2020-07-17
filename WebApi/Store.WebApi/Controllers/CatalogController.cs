@@ -71,8 +71,7 @@ namespace Store.WebApi.Controllers
                             {
                                 Id = item.Id,
                                 Description = item.Description,
-                                Mark = item.Mark,
-                                Type = item.Type,
+                                Detail = item.Detail,
                                 Category = new
                                 {
                                     Id = item.Category.Id,
@@ -103,8 +102,8 @@ namespace Store.WebApi.Controllers
                                 {
                                     Id = product.Specification.Id,
                                     Description = product.Specification.Description,
-                                    Mark = product.Specification.Mark,
-                                    Type = product.Specification.Type,
+                                    Brand = product.Brand,
+                                    Detail = product.Specification.Detail,
                                     Category = new
                                     {
                                         Id = product.Specification.Category.Id,
@@ -135,7 +134,7 @@ namespace Store.WebApi.Controllers
         {
             try
             {
-                if (productLogic.Register(model.Code, model.Price, model.Description, model.Mark, model.Type, model.Specification, model.Color, model.Size, model.Category))
+                if (productLogic.Register(model.Code, model.Price, model.Description, model.Brand, model.Detail, model.Specification, model.Color, model.Size, model.Category))
                     return Ok(new { Result = "Producto registrado exitosamente." });
                 else
                     return NotFound(new { ErrorMessage = "No se pudo registrar el producto." });
