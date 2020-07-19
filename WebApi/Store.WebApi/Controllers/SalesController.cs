@@ -20,7 +20,7 @@ namespace Store.WebApi.Controllers
             this.saleLogic = saleLogic;
         }
 
-        [HttpGet("{date}")]
+        [HttpGet("Find/{date}")]
         public IActionResult Get(DateTime date)
         {
             try
