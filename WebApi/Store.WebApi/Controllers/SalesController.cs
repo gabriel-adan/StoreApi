@@ -89,7 +89,7 @@ namespace Store.WebApi.Controllers
                 {
                     string userName = User.Identity.Name;
                     saleLogic.Register(model.Date, userName, model.OrderDetailIds, model.UnitPrices);
-                    return Ok();
+                    return Ok(new { Result = "Venta registrada exitosamente." });
                 }
                 return NotFound(new { ErrorMessage = "Datos inválidos" });
             }

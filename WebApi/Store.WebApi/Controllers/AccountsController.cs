@@ -44,6 +44,7 @@ namespace Store.WebApi.Controllers
                             audience: validAudience,
                             claims: new Claim[] {
                                 new Claim("User", user.UserName),
+                                new Claim(ClaimTypes.Name, user.UserName),
                                 new Claim("UserName", user.FullName),
                                 new Claim(JwtHeaderParameterNames.Kid, Guid.NewGuid().ToString())
                             },
