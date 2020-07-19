@@ -9,10 +9,10 @@ namespace Store.Logic.Layer.Common
 {
     public class OrderLogic : IOrderLogic
     {
-        private readonly IRepository<Order> orderRepository;
+        private readonly IOrderRepository orderRepository;
         private readonly IRepository<Product> productRepository;
 
-        public OrderLogic(IRepository<Order> orderRepository, IRepository<Product> productRepository)
+        public OrderLogic(IOrderRepository orderRepository, IRepository<Product> productRepository)
         {
             this.orderRepository = orderRepository;
             this.productRepository = productRepository;
@@ -101,6 +101,26 @@ namespace Store.Logic.Layer.Common
                 {
                     throw new Exception("Error en transacción...");
                 }
+            }
+        }
+
+        public IList<OrderDetail> Find(int productId, int amount)
+        {
+            try
+            {
+                if (productId <= 0)
+                    throw new ArgumentException("Código de producto inválido.");
+                if (amount <= 0)
+                    throw new ArgumentException("Cantidad inválida.");
+                return orderRepository.Find(productId, amount);
+            }
+            catch (ArgumentException ae)
+            {
+                throw ae;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrió un error.", ex);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Store.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class SalesController : ControllerBase
     {
         private readonly ISaleLogic saleLogic;
@@ -88,7 +88,7 @@ namespace Store.WebApi.Controllers
                 if (ModelState.IsValid)
                 {
                     string userName = User.Identity.Name;
-                    saleLogic.Register(model.Date, userName, model.OrderDetailIds, model.UnitPrices, model.Amounts);
+                    saleLogic.Register(model.Date, userName, model.OrderDetailIds, model.UnitPrices);
                     return Ok();
                 }
                 return NotFound(new { ErrorMessage = "Datos inválidos" });

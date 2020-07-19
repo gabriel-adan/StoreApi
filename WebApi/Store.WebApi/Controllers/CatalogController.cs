@@ -98,11 +98,11 @@ namespace Store.WebApi.Controllers
                                 Id = product.Id,
                                 Code = product.Code,
                                 Price = product.Price,
+                                Brand = product.Brand,
                                 Specification = new
                                 {
                                     Id = product.Specification.Id,
                                     Description = product.Specification.Description,
-                                    Brand = product.Brand,
                                     Detail = product.Specification.Detail,
                                     Category = new
                                     {

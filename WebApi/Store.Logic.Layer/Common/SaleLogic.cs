@@ -45,7 +45,7 @@ namespace Store.Logic.Layer.Common
             }
         }
 
-        public void Register(DateTime? date, string userName, IList<int> orderDetailIds, IList<float> unitPrices, IList<int> amounts)
+        public void Register(DateTime? date, string userName, IList<int> orderDetailIds, IList<float> unitPrices)
         {
             try
             {
@@ -58,11 +58,9 @@ namespace Store.Logic.Layer.Common
                     throw new ArgumentException("Productos inválidos.");
                 if (unitPrices == null || unitPrices.Count == 0)
                     throw new ArgumentException("Precios de productos inválidos.");
-                if (amounts == null || amounts.Count == 0)
-                    throw new ArgumentException("Cantidades de productos inválidos.");
 
                 int count = orderDetailIds.Count;
-                if (count == unitPrices.Count && count == amounts.Count)
+                if (count == unitPrices.Count)
                 {
                     saleRepository.BeginTransaction();
                     Sale sale = new Sale();
@@ -71,31 +69,19 @@ namespace Store.Logic.Layer.Common
                     saleRepository.Save(sale);
                     for (int i = 0; i < count; i++)
                     {
-                        int amount = amounts[i];
-                        if (amount < 1)
-                            throw new ArgumentException("Cantidad inválida.");
                         float unitPrice = unitPrices[i];
                         if (unitPrice < 0)
                             throw new ArgumentException("Precio inválido.");
                         int orderDetailId = orderDetailIds[i];
-                        OrderDetail orderItem = orderDetailRepository.Get(orderDetailId);
-                        if (orderItem == null)
+                        OrderDetail orderDetail = orderDetailRepository.Get(orderDetailId);
+                        if (orderDetail == null)
                             throw new ArgumentException("Producto no encontrado.");
-                        Product product = orderItem.Product;
-                        IList<OrderDetail> orderDetails = orderRepository.Find(product.Code, product.Color.Id, product.Size.Id, amount);
-                        int units = orderDetails.Count;
-                        if (units == 0)
-                            throw new ArgumentException(string.Format("No quedan unidades en stock del producto {0} {1} Talle: {2} Color: {3}.", product.Code, product.Specification.Description, product.Size.Name, product.Color.Name));
-                        if (units != amount)
-                            throw new ArgumentException(string.Format("Solo queda{0} {1} unidad{2} registrada{3} en el sistema del producto {4} {5} Talle: {6} Color: {7}.", units == 1 ? "" : "n", units, units == 1 ? "" : "es", units == 1 ? "" : "s", product.Code, product.Specification.Description, product.Size.Name, product.Color.Name));
-                        foreach(OrderDetail orderDetail in orderDetails)
-                        {
-                            SaleDetail saleDetail = new SaleDetail();
-                            saleDetail.Sale = sale;
-                            saleDetail.OrderDetail = orderDetail;
-                            saleDetail.UnitPrice = unitPrice == 0 ? orderDetail.Product.Price : unitPrice;
-                            sale.SaleDetails.Add(saleDetail);
-                        }
+
+                        SaleDetail saleDetail = new SaleDetail();
+                        saleDetail.Sale = sale;
+                        saleDetail.OrderDetail = orderDetail;
+                        saleDetail.UnitPrice = unitPrice == 0 ? orderDetail.Product.Price : unitPrice;
+                        sale.SaleDetails.Add(saleDetail);
                     }
                     saleRepository.SaveOrUpdate(sale);
                     saleRepository.CommitTransaction();

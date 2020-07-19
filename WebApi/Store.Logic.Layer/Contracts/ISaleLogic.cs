@@ -10,6 +10,6 @@ namespace Store.Logic.Layer.Contracts
 
         IList<Sale> GetByDate(DateTime date);
 
-        void Register(DateTime? date, string userName, IList<int> orderDetailIds, IList<float> unitPrices, IList<int> amounts);
+        void Register(DateTime? date, string userName, IList<int> orderDetailIds, IList<float> unitPrices);
     }
 }
