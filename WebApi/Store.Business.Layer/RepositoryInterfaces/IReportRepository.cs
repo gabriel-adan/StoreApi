@@ -9,5 +9,13 @@ namespace Store.Business.Layer.RepositoryInterfaces
         IList<SaleItemMonthReport> GetSaleMonthReport(DateTime date);
 
         IList<StockStateReport> GetStockStateReport();
+
+        IList<PaymedItemReport> GetPaymedItemReport(DateTime date);
+
+        CreditAmountReport GetCreditAmountReport(int creditId);
+
+        IList<SaleReport> GetSaleRentabilityReport(DateTime date);
+
+        IList<ProductStockReport> GetProductStockReport();
     }
 }

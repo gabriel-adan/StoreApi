@@ -2,13 +2,13 @@
 {
     public abstract class ItemReport
     {
-        public virtual string Code { get; set; }
-        public virtual string Description { get; set; }
-        public virtual string Mark { get; set; }
-        public virtual string Type { get; set; }
-        public virtual string Color { get; set; }
-        public virtual string Size { get; set; }
-        public virtual double UnitCost { get; set; }
-        public virtual double UnitPrice { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
+        public string Detail { get; set; }
+        public string Brand { get; set; }
+        public string Color { get; set; }
+        public string Size { get; set; }
+        public double UnitCost { get; set; }
+        public double UnitPrice { get; set; }
     }
 }

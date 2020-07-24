@@ -9,5 +9,9 @@ namespace Store.Logic.Layer.Contracts
         IList<SaleItemMonthReport> GetSalesByMonth(DateTime date);
 
         IList<StockStateReport> GetStockStateReport();
+
+        double GetMonthRentabilityReport(DateTime month);
+
+        IList<ProductStockReport> GetProductStockReport();
     }
 }
