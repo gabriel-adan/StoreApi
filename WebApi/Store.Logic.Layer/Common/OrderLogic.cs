@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Collections.Generic;
 using Store.Business.Layer;
 using Store.Business.Layer.RepositoryInterfaces;
@@ -79,17 +78,9 @@ namespace Store.Logic.Layer.Common
                 orderRepository.SaveOrUpdate(order);
                 orderRepository.CommitTransaction();
             }
-            catch (ArgumentException aex)
+            catch
             {
-                throw aex;
-            }
-            catch (SqlException sqlex)
-            {
-                throw new Exception("Error al intentar registrar los datos de la factura.", sqlex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error.", ex);
+                throw;
             }
             finally
             {
@@ -99,7 +90,7 @@ namespace Store.Logic.Layer.Common
                 }
                 catch
                 {
-                    throw new Exception("Error en transacción...");
+                    throw;
                 }
             }
         }
@@ -114,13 +105,9 @@ namespace Store.Logic.Layer.Common
                     throw new ArgumentException("Cantidad inválida.");
                 return orderRepository.Find(productId, amount);
             }
-            catch (ArgumentException ae)
+            catch
             {
-                throw ae;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error.", ex);
+                throw;
             }
         }
     }

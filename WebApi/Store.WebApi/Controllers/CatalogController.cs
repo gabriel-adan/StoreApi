@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using Store.Logic.Layer.Contracts;
 using Store.WebApi.ViewModels;
 
@@ -12,11 +13,13 @@ namespace Store.WebApi.Controllers
     [Authorize]
     public class CatalogController : ControllerBase
     {
+        private readonly ILogger logger;
         private readonly IItemLogic itemLogic;
         private readonly IProductLogic productLogic;
 
-        public CatalogController(IItemLogic itemLogic, IProductLogic productLogic) : base()
+        public CatalogController(ILogger<CatalogController> logger, IItemLogic itemLogic, IProductLogic productLogic) : base()
         {
+            this.logger = logger;
             this.itemLogic = itemLogic;
             this.productLogic = productLogic;
         }
@@ -30,7 +33,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al listar las categorias.");
             }
         }
 
@@ -43,7 +47,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al listar los colores.");
             }
         }
 
@@ -56,7 +61,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al listar los talles.");
             }
         }
 
@@ -80,9 +86,14 @@ namespace Store.WebApi.Controllers
                             };
                 return Ok(query.ToList());
             }
+            catch (ArgumentException ae)
+            {
+                return NotFound(new { ErrorMessage = ae.Message });
+            }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al listar las especificaciones de producto.");
             }
         }
 
@@ -123,9 +134,14 @@ namespace Store.WebApi.Controllers
                             };
                 return Ok(query.ToList());
             }
+            catch (ArgumentException ae)
+            {
+                return NotFound(new { ErrorMessage = ae.Message });
+            }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al listar los productos.");
             }
         }
 
@@ -145,7 +161,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = "Ocurrió un error." });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al intentar registrar el producto.");
             }
         }
     }

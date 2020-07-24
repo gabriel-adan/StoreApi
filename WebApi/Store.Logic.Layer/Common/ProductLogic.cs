@@ -28,16 +28,12 @@ namespace Store.Logic.Layer.Common
             try
             {
                 if (string.IsNullOrEmpty(description))
-                    throw new ArgumentException("Debe proveer un valor para la descripción.");
+                    throw new ArgumentException("Debe proveer un valor para buscar la descripción.");
                 return productRepository.FindSpecifications(description);
             }
-            catch (ArgumentException ae)
+            catch
             {
-                throw ae;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error al listar las especificaciones de producto.", ex);
+                throw;
             }
         }
 
@@ -49,13 +45,9 @@ namespace Store.Logic.Layer.Common
                     throw new ArgumentException("Debe proveer un código de producto.");
                 return productRepository.Find(code);
             }
-            catch (ArgumentException ae)
+            catch
             {
-                throw ae;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error al listar los productos.", ex);
+                throw;
             }
         }
 

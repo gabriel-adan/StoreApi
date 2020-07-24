@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Store.Business.Layer;
 using Store.Business.Layer.RepositoryInterfaces;
@@ -15,11 +16,13 @@ namespace Store.WebApi.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly ILogger logger;
         private readonly IConfiguration configuration;
         private readonly IUserAccountRepository userAccountRepository;
 
-        public AccountsController(IConfiguration configuration, IUserAccountRepository userAccountRepository) : base ()
+        public AccountsController(ILogger<AccountsController> logger, IConfiguration configuration, IUserAccountRepository userAccountRepository) : base ()
         {
+            this.logger = logger;
             this.configuration = configuration;
             this.userAccountRepository = userAccountRepository;
         }
@@ -64,7 +67,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error.");
             }
         }
     }

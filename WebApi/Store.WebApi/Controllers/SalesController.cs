@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Store.Logic.Layer.Contracts;
 using Store.WebApi.ViewModels;
 
@@ -13,10 +14,12 @@ namespace Store.WebApi.Controllers
     [Authorize]
     public class SalesController : ControllerBase
     {
+        private readonly ILogger logger;
         private readonly ISaleLogic saleLogic;
 
-        public SalesController(ISaleLogic saleLogic) : base ()
+        public SalesController(ILogger<SalesController> logger, ISaleLogic saleLogic) : base ()
         {
+            this.logger = logger;
             this.saleLogic = saleLogic;
         }
 
@@ -39,7 +42,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error.");
             }
         }
 
@@ -76,7 +80,8 @@ namespace Store.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error.");
             }
         }
 
@@ -93,9 +98,14 @@ namespace Store.WebApi.Controllers
                 }
                 return NotFound(new { ErrorMessage = "Datos inválidos" });
             }
+            catch (ArgumentException ae)
+            {
+                return NotFound(new { ErrorMessage = ae.Message });
+            }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al registrar la venta.");
             }
         }
     }

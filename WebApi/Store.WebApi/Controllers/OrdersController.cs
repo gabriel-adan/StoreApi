@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Store.Logic.Layer.Contracts;
 using Store.WebApi.ViewModels;
 
@@ -12,10 +13,12 @@ namespace Store.WebApi.Controllers
     [Authorize]
     public class OrdersController : ControllerBase
     {
+        private readonly ILogger logger;
         private readonly IOrderLogic orderLogic;
 
-        public OrdersController(IOrderLogic orderLogic) : base ()
+        public OrdersController(ILogger<OrdersController> logger, IOrderLogic orderLogic) : base ()
         {
+            this.logger = logger;
             this.orderLogic = orderLogic;
         }
 
@@ -31,9 +34,14 @@ namespace Store.WebApi.Controllers
                 }
                 return NotFound(new { ErrorMessage = "Datos inválidos..." });
             }
+            catch (ArgumentException ae)
+            {
+                return NotFound(new { ErrorMessage = ae.Message });
+            }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error al intentar registrar los datos de la factura.");
             }
         }
 
@@ -78,9 +86,14 @@ namespace Store.WebApi.Controllers
                             };
                 return Ok(query.ToList());
             }
+            catch (ArgumentException ae)
+            {
+                return NotFound(new { ErrorMessage = ae.Message });
+            }
             catch (Exception ex)
             {
-                return NotFound(new { ErrorMessage = ex.Message });
+                logger.LogError(ex, ex.Message);
+                throw new Exception("Ocurrió un error.");
             }
         }
     }

@@ -20,12 +20,12 @@ namespace Store.Logic.Layer.Common
             try
             {
                 if (date == DateTime.MinValue)
-                    throw new Exception("Fecha inválida");
+                    throw new ArgumentException("Fecha inválida");
                 return reportRepository.GetSaleMonthReport(date);
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -35,9 +35,9 @@ namespace Store.Logic.Layer.Common
             {
                 return reportRepository.GetStockStateReport();
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -46,6 +46,8 @@ namespace Store.Logic.Layer.Common
             double total = 0;
             try
             {
+                if (month == DateTime.MinValue)
+                    throw new ArgumentException("Mes inválido");
                 IList<PaymedItemReport> paymedItemReports = reportRepository.GetPaymedItemReport(month);
                 foreach (PaymedItemReport paymedItem in paymedItemReports)
                 {
@@ -60,9 +62,9 @@ namespace Store.Logic.Layer.Common
                     total += saleReport.Total;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
             return total;
         }
@@ -73,9 +75,9 @@ namespace Store.Logic.Layer.Common
             {
                 return reportRepository.GetProductStockReport();
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
     }

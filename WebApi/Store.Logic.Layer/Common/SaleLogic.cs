@@ -27,9 +27,9 @@ namespace Store.Logic.Layer.Common
             {
                 return saleRepository.Get(id);
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception("Ocurrió un error.", ex);
+                throw;
             }
         }
 
@@ -39,9 +39,9 @@ namespace Store.Logic.Layer.Common
             {
                 return saleRepository.GetList(date);
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception("Ocurrió un error.", ex);
+                throw;
             }
         }
 
@@ -91,17 +91,20 @@ namespace Store.Logic.Layer.Common
                     throw new ArgumentException("Datos de productos inválidos.");
                 }
             }
-            catch (ArgumentException ae)
+            catch
             {
-                throw ae;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error.", ex);
+                throw;
             }
             finally
             {
-                saleRepository.RollbackTransaction();
+                try
+                {
+                    saleRepository.RollbackTransaction();
+                }
+                catch
+                {
+                    throw;
+                }
             }
         }
     }
